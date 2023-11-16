@@ -1,0 +1,59 @@
+---
+- name: Install Docker
+  hosts: appserver:monitoring:gateway
+  become: yes
+
+  vars:
+    username_docker: "galantixa"
+    password_docker: "makanayam123"
+    user: "adminuser"
+
+  tasks:
+    - name: update
+      apt:
+        update_cache: true
+        upgrade: yes
+    - name: Install ca-certificates, curl, software-properties-common, gnupg
+      apt:
+        update_cache: yes
+        name:
+          - apt-transport-httpsmakanayam123
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - gnupg
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker repositories
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Start and enable Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add user to docker group
+      user:
+        name: "{{ user }}"
+        group: docker
+        state: present
+
+    - name: Login to Docker Hub
+      docker_login:
+        username: "{{ username_docker }}"
+        password: "{{ password_docker }}"

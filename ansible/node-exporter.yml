@@ -1,0 +1,14 @@
+---
+- name: install node exporter
+  hosts: appserver:gateway:monitoring
+  become: yes
+
+  tasks:
+    - name: Run docker image
+      docker_container:
+        name: node-exporter
+        image: bitnami/node-exporter
+        state: started
+        restart_policy: always
+        ports:
+          - "9100:9100"

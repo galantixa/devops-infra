@@ -1,0 +1,22 @@
+---
+- name: install nginx
+  hosts: gateway
+  become: yes
+
+  tasks:
+    - name: update
+      apt:
+        name: nginx
+        update_cache: yes
+        state: present
+    - name: Start service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+    - name: reverse-proxy
+      template:
+        src: env/reverse-proxy.conf
+        dest: /etc/nginx/sites-enabled
+    - name: reload nginx
+      command: sudo nginx -s reload

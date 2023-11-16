@@ -1,0 +1,9 @@
+[appserver]
+4.193.47.92
+[gateway]
+4.193.46.74
+[monitoring]
+4.193.47.16
+
+[all:vars]
+ansible_user=adminuser

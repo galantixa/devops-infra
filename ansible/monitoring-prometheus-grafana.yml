@@ -1,0 +1,28 @@
+---
+- name: instal prometheus
+  hosts: monitoring
+  become: yes
+
+  tasks:
+    - name: add node exporter sources
+      template:
+        src: env/prometheus.yml
+        dest: /home/adminuser
+    - name: run prometheus
+      docker_container:
+        name: prometheus
+        image: bitnami/prometheus:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "9090:9090"
+        volumes:
+          - /home/adminuser/prometheus.yml:/etc/prometheus/prometheus.yml
+    - name: grafana
+      docker_container:
+        name: grafana
+        image: bitnami/grafana:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "3000:3000"

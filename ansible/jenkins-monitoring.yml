@@ -1,0 +1,18 @@
+---
+- name: install jenkins
+  hosts: monitoring
+  become: yes
+
+  tasks:
+    # - name: pull jenkins
+    #   docker_image:
+    #     name: jenkins/jenkins
+    #     tag: latest
+    #     source: pull
+    - name: run jenkins
+      docker_container:
+        name: jenkins
+        image: jenkins/jenkins:latest
+        restart_policy: always
+        ports:
+          - "8080:8080"

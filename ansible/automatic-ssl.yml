@@ -1,0 +1,84 @@
+# ---
+# - name: Automatic Wildcard SSL with Certbot
+#   hosts: gateway
+#   become: yes
+
+#   tasks:
+#     - name: Install Certbot
+#       command: sudo snap install --classic certbot
+
+#     - name: certbot command
+#       command: sudo ln -s /snap/bin/certbot /usr/bin/certbot
+#     - name: plugin
+#       command: sudo snap set certbot trust-plugin-with-root=ok
+#     - name: dns provider
+#       command: sudo snap install certbot-dns-cloudflare
+#     - name: stop nginx
+#       service:
+#         name: nginx
+#         state: stopped
+
+#     # - name: Obtain Wildcard SSL Certificate
+#     #   command: "certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini -d '*.galantixa.my.id' --non-interactive --agree-tos --email galantixaa@gmail.com"
+#     #   args:
+#     #     creates: "/etc/letsencrypt/live/galantixa.my.id/fullchain.pem"
+#     - name: Run Certbot for Wildcard Certificate
+#       command: >
+#         certbot certonly
+#         --manual
+#         --preferred-challenges dns
+#         --agree-tos
+#         --email galantixaa@gmail.com
+#         -d '*.galantixa.my.id'
+#         --server https://acme-v02.api.letsencrypt.org/directory
+#       environment:
+#         CERTBOT_DNS_PROVIDER: "cloudflare"  # Set your DNS provider here
+#       register: certbot_result
+#     - name: Ensure Nginx is started
+#       service:
+#         name: nginx
+#         state: started
+
+#     - name: Add Certbot Renewal Cron Job
+#       cron:
+#         name: "Renew SSL Certificates"
+#         weekday: 1
+#         job: "/usr/bin/certbot renew --quiet"
+
+---
+- name: Generate Wildcard SSL Certificate with Certbot
+  hosts: gateway
+  become: yes
+
+  tasks:
+    # - name: Install Certbot
+    #   apt:
+    #     name: certbot
+    #     state: presen
+    #   become: yes
+    # - name: dns
+    #   command: sudo apt install python3-certbot-dns-cloudflare
+    - name: Stop Nginx
+      systemd:
+        name: nginx
+        state: stopped
+      loop:
+        - nginx
+    - name: Cloudflare.ini
+      template:
+        src: env/cloudflare.ini
+        dest: /etc/letsencrypt/
+    - name: Generate Wildcard SSL Certificate
+      command: >
+        certbot certonly\
+        --dns-cloudflare\
+        --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini\
+        --agree-tos\
+        -d "*.galantixa.my.id"\
+
+    - name: Restart Nginx or Apache (
+      systemd:
+        name: nginx
+        state: started
+      loop:
+        - nginx

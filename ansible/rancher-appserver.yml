@@ -1,0 +1,8 @@
+---
+- name: install rancher kind
+  hosts: appserver
+  become: yes
+
+  tasks:
+    - name: Rancher KIND
+      command: sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
