@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dumbmerch-fe
+spec:
+  selector:
+    matchLabels:
+      app: app-fe
+  template:
+    metadata:
+      labels:
+        app: app-fe
+    spec:
+      containers:
+        - name: dumbmerch-fe
+          image: galantixa/production-dumbmerch-fe:latest
+          workingDir: /app
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: app-fe
+  ports:
+    - port: 3000
+      targetPort: 3000

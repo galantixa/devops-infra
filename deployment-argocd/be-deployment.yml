@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dumbmerch-be
+spec:
+  selector:
+    matchLabels:
+      app: app-be
+  template:
+    metadata:
+      labels:
+        app: app-be
+    spec:
+      containers:
+        - name: dumbmerch-be
+          image: galantixa/production-dumbmerch-be:24
+          workingDir: /app
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5000

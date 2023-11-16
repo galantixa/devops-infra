@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERUSERNAME = "galantixa"
+        DOCKER_IMAGE_NAME = 'production-dumbmerch-fe'
+        EMAIL = "nugrahafajarrr@gmail.com"
+    }
+
+    stages {
+        stage('Pull Repo') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Update Manifest Version') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        sh "git config user.email ${EMAIL}"
+                        sh "git config user.name galantixa"
+                        sh "cat fe-deployment.yml"
+                        sh "sed -i 's|${DOCKERUSERNAME}/${DOCKER_IMAGE_NAME}.*|${DOCKERUSERNAME}/${DOCKER_IMAGE_NAME}:${DOCKERTAGFE}|g' fe-deployment.yml"
+                        sh "cat fe-deployment.yml"
+                        sh "git add ."
+                        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
+                        sh "git push https://${USERNAME}:${PASSWORD}@github.com/${USERNAME}/deployment-argocd-fe.git HEAD:main"
+                    }
+                }
+            }
+        }
+    }
+}
