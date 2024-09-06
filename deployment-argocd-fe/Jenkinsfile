@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKERUSERNAME = "galantixa"
+        DOCKERUSERNAME = "username"
         DOCKER_IMAGE_NAME = 'production-dumbmerch-fe'
-        EMAIL = "nugrahafajarrr@gmail.com"
+        EMAIL = "user@email.com"
     }
 
     stages {
