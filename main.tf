@@ -1,6 +1,6 @@
 //TODO Create Group
 resource "azurerm_resource_group" "galantixa" {
-    name     = "galanixa-resources"
+    name     = "name-of-your-resource"
     location = "Southeast Asia"
     tags = {
         environment = "Production"
