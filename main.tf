@@ -138,7 +138,7 @@ resource "azurerm_linux_virtual_machine" "appserver" {
 
     admin_ssh_key {
         username = "adminuser"
-        public_key = file("/home/fanboy/.ssh/id_rsa.pub")
+        public_key = file("/home/username/.ssh/id_rsa.pub")
     }
     os_disk {
         caching              = "ReadWrite"
@@ -166,7 +166,7 @@ resource "azurerm_linux_virtual_machine" "gateway" {
 
     admin_ssh_key {
         username = "adminuser"
-        public_key = file("/home/fanboy/.ssh/id_rsa.pub")
+        public_key = file("/home/username/.ssh/id_rsa.pub")
     }
     os_disk {
         caching              = "ReadWrite"
@@ -194,7 +194,7 @@ resource "azurerm_linux_virtual_machine" "monitoring" {
 
     admin_ssh_key {
         username = "adminuser"
-        public_key = file("/home/fanboy/.ssh/id_rsa.pub")
+        public_key = file("/home/username/.ssh/id_rsa.pub")
     }
     os_disk {
         caching              = "ReadWrite"
