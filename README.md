@@ -74,6 +74,8 @@ Use Cases:
 Kubernetes is widely adopted in modern cloud environments due to its ability to handle complex containerized applications with ease and efficiency.
 
 _Kubernetes Setup and Installation coming soon..._
+#### Step-6: Install ArgoCD
+_ArgoCD Setup and Installation coming soon..._
 ### Last But Not Least:
 #### End-To-End CI\CD Pipeline Implementation
 _CI/CD Updated soon..._
