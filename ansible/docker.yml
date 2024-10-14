@@ -4,9 +4,9 @@
   become: yes
 
   vars:
-    username_docker: "galantixa"
-    password_docker: "makanayam123"
-    user: "adminuser"
+    username_docker: ""
+    password_docker: ""
+    user: ""
 
   tasks:
     - name: update
